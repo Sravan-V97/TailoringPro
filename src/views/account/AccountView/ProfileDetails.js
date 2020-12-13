@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import firebaseDb from '../../../firebase';
@@ -29,7 +29,7 @@ const states = [
   {
     value: 'tamilnadu',
     label: 'Tamilnadu'
-  },
+  }
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -69,6 +69,15 @@ function getStyles(name, personName, theme) {
   };
 }
 const ProfileDetails = ({ className, ...rest }) => {
+  var [courseObjects, setCourseObjects] = useState({});
+  useEffect(() => {
+    firebaseDb.child('coursedetails').on('value', snapshot => {
+      if (snapshot.val() != null)
+        setCourseObjects({
+          ...snapshot.val()
+        });
+    });
+  }, []);
   const classes = useStyles();
   const theme = useTheme();
   const [values, setValues] = useState({
@@ -88,7 +97,6 @@ const ProfileDetails = ({ className, ...rest }) => {
     });
   };
   const handleSubmit = () => {
-    
     let data = {
       id: uuid(),
       address: {
@@ -236,13 +244,18 @@ const ProfileDetails = ({ className, ...rest }) => {
                 variant="outlined"
                 className="w-100"
               >
-                {course_data.map(name => (
+                {Object.keys(courseObjects).map(id => (
                   <MenuItem
-                    key={name.id}
-                    value={name.title}
-                    style={getStyles(name.title, values.course, theme)}
+                    key={courseObjects[id].id}
+                    value={courseObjects[id].courseTitle}
+                    style={getStyles(
+                      courseObjects[id].courseTitle,
+                      values.course,
+                      theme
+                    )}
                   >
-                    {name.title}
+                    {/* {JSON.stringify(courseObjects[id])} */}
+                    {courseObjects[id].courseTitle}
                   </MenuItem>
                 ))}
               </Select>
