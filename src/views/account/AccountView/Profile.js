@@ -16,10 +16,10 @@ import {
 
 const user = {
   avatar: '/static/images/avatars/avatar_6.png',
-  city: 'Los Angeles',
-  country: 'USA',
+  city: 'Palakkas',
+  country: 'India',
   jobTitle: 'Senior Developer',
-  name: 'Katarina Smith',
+  name: 'Sravan',
   timezone: 'GTM-7'
 };
 

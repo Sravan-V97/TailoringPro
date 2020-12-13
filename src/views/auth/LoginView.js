@@ -12,8 +12,6 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-import FacebookIcon from 'src/icons/Facebook';
-import GoogleIcon from 'src/icons/Google';
 import Page from 'src/components/Page';
 
 const useStyles = makeStyles((theme) => ({
@@ -43,16 +41,23 @@ const LoginView = () => {
         <Container maxWidth="sm">
           <Formik
             initialValues={{
-              email: 'demo@devias.io',
-              password: 'Password123'
+              email: '',
+              password: ''
             }}
             validationSchema={Yup.object().shape({
               email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
               password: Yup.string().max(255).required('Password is required')
             })}
-            onSubmit={() => {
-              navigate('/app/dashboard', { replace: true });
-            }}
+            onSubmit={e => {
+              if (
+                e.email === 'sravanvijayakumar97@gmail.com' &&
+                e.password === 'Sravan@7565'
+              ) {
+                navigate('/app/dashboard', { replace: true });
+              } else {
+                alert('Please eneter valid email and password');
+              }
+            }}y
           >
             {({
               errors,
@@ -76,57 +81,14 @@ const LoginView = () => {
                     gutterBottom
                     variant="body2"
                   >
-                    Sign in on the internal platform
+                    Sign in to the Tailoring Console
                   </Typography>
                 </Box>
                 <Grid
                   container
                   spacing={3}
                 >
-                  <Grid
-                    item
-                    xs={12}
-                    md={6}
-                  >
-                    <Button
-                      color="primary"
-                      fullWidth
-                      startIcon={<FacebookIcon />}
-                      onClick={handleSubmit}
-                      size="large"
-                      variant="contained"
-                    >
-                      Login with Facebook
-                    </Button>
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    md={6}
-                  >
-                    <Button
-                      fullWidth
-                      startIcon={<GoogleIcon />}
-                      onClick={handleSubmit}
-                      size="large"
-                      variant="contained"
-                    >
-                      Login with Google
-                    </Button>
-                  </Grid>
                 </Grid>
-                <Box
-                  mt={3}
-                  mb={1}
-                >
-                  <Typography
-                    align="center"
-                    color="textSecondary"
-                    variant="body1"
-                  >
-                    or login with email address
-                  </Typography>
-                </Box>
                 <TextField
                   error={Boolean(touched.email && errors.email)}
                   fullWidth
@@ -165,20 +127,7 @@ const LoginView = () => {
                     Sign in now
                   </Button>
                 </Box>
-                <Typography
-                  color="textSecondary"
-                  variant="body1"
-                >
-                  Don&apos;t have an account?
-                  {' '}
-                  <Link
-                    component={RouterLink}
-                    to="/register"
-                    variant="h6"
-                  >
-                    Sign up
-                  </Link>
-                </Typography>
+                
               </form>
             )}
           </Formik>

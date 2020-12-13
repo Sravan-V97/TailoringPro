@@ -12,6 +12,7 @@ import {
   makeStyles
 } from '@material-ui/core';
 import { Search as SearchIcon } from 'react-feather';
+import { Link as RouterLink } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -29,9 +30,11 @@ const Toolbar = ({ className, ...rest }) => {
   return (
     <div className={clsx(classes.root, className)} {...rest}>
       <Box display="flex" justifyContent="flex-end">
+      <RouterLink to="/app/add-course">
         <Button color="primary" variant="contained">
-          Add product
+          Add Courses
         </Button>
+      </RouterLink>  
       </Box>
       {/* <Box mt={3}>
         <Card>

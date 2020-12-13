@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
+import firebaseDb from '../../../firebase';
 import {
   Box,
   Button,
@@ -19,19 +20,16 @@ import { v4 as uuid } from 'uuid';
 import course_data from 'src/data/course_data';
 import { useTheme } from '@material-ui/core/styles';
 import './profile.css';
+import data from 'src/views/customer/CustomerListView/data';
 const states = [
   {
-    value: 'alabama',
-    label: 'Alabama'
+    value: 'kerala',
+    label: 'Kerala'
   },
   {
-    value: 'new-york',
-    label: 'New York'
+    value: 'tamilnadu',
+    label: 'Tamilnadu'
   },
-  {
-    value: 'san-francisco',
-    label: 'San Francisco'
-  }
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -90,6 +88,7 @@ const ProfileDetails = ({ className, ...rest }) => {
     });
   };
   const handleSubmit = () => {
+    
     let data = {
       id: uuid(),
       address: {
@@ -104,8 +103,14 @@ const ProfileDetails = ({ className, ...rest }) => {
       name: values.name,
       phone: values.phone
     };
+    addEdit();
     console.log(data);
   };
+
+  const addEdit = () => {
+    firebaseDb.child('studentdetails').push(values);
+  };
+
   return (
     <form
       autoComplete="off"
@@ -234,7 +239,7 @@ const ProfileDetails = ({ className, ...rest }) => {
                 {course_data.map(name => (
                   <MenuItem
                     key={name.id}
-                    value={name.id}
+                    value={name.title}
                     style={getStyles(name.title, values.course, theme)}
                   >
                     {name.title}

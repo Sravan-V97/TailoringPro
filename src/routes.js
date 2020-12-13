@@ -10,6 +10,7 @@ import NotFoundView from 'src/views/errors/NotFoundView';
 import ProductListView from 'src/views/product/ProductListView';
 import RegisterView from 'src/views/auth/RegisterView';
 import SettingsView from 'src/views/settings/SettingsView';
+import AddCourse from 'src/views/AddCourse';
 
 const routes = [
   {
@@ -17,6 +18,7 @@ const routes = [
     element: <DashboardLayout />,
     children: [
       { path: 'add-student', element: <AccountView /> },
+      { path: 'add-course', element: <AddCourse /> },
       { path: 'students', element: <CustomerListView /> },
       { path: 'dashboard', element: <DashboardView /> },
       { path: 'courses', element: <ProductListView /> },
@@ -30,7 +32,7 @@ const routes = [
       { path: 'login', element: <LoginView /> },
       { path: 'register', element: <RegisterView /> },
       { path: '404', element: <NotFoundView /> },
-      { path: '/', element: <Navigate to="/app/dashboard" /> },
+      { path: '/', element: <Navigate to="/login" /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]
   }

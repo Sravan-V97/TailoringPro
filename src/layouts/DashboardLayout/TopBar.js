@@ -31,22 +31,13 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
   return (
     <AppBar className={clsx(classes.root, className)} elevation={0} {...rest}>
       <Toolbar>
-        <RouterLink to="/">
+        <RouterLink to="/app/dashboard">
           <Logo />
         </RouterLink>
         <Box flexGrow={1} />
         <Hidden mdDown>
-          {/* <IconButton color="inherit">
-            <Badge
-              badgeContent={notifications.length}
-              color="primary"
-              variant="dot"
-            >
-              <NotificationsIcon />
-            </Badge>
-          </IconButton> */}
           <RouterLink to="/login">
-            <IconButton color="inherit">
+            <IconButton color="default">
               <InputIcon />
             </IconButton>
           </RouterLink>

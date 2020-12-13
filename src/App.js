@@ -6,6 +6,7 @@ import GlobalStyles from 'src/components/GlobalStyles';
 import 'src/mixins/chartjs';
 import theme from 'src/theme';
 import routes from 'src/routes';
+import { FirebaseDatabaseProvider } from "@react-firebase/database";
 import { CostumerProvider } from './context/customerContext';
 import { CourseProvider } from './context/courseContext';
 import student_data from './data/student_data';
@@ -16,7 +17,9 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
+      <FirebaseDatabaseProvider>
       {routing}
+      </FirebaseDatabaseProvider>
     </ThemeProvider>
   );
 };

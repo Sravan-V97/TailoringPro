@@ -4,6 +4,7 @@ import moment from 'moment';
 import { v4 as uuid } from 'uuid';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import PropTypes from 'prop-types';
+import { Link as RouterLink } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -165,14 +166,16 @@ const LatestOrders = ({ className, ...rest }) => {
         justifyContent="flex-end"
         p={2}
       >
-        <Button
-          color="primary"
-          endIcon={<ArrowRightIcon />}
-          size="small"
-          variant="text"
-        >
-          View all
-        </Button>
+        <RouterLink to="/app/courses">
+          <Button
+            color="primary"
+            endIcon={<ArrowRightIcon />}
+            size="small"
+            variant="text"
+          >
+            View all
+          </Button>
+        </RouterLink>
       </Box>
     </Card>
   );

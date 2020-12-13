@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import firebaseDb from '../../../firebase';
 import {
   Avatar,
   Box,
@@ -79,6 +80,17 @@ const Results = ({ className, customers, ...rest }) => {
     setPage(newPage);
   };
 
+  var [studentObjects,setStudentObjects] = useState({})
+
+  useEffect(()=>{
+    firebaseDb.child('studentdetails').on('value',snapshot=>{
+      if(snapshot.val()!=null)
+      setStudentObjects({
+        ...snapshot.val()
+      })
+    }) 
+  },[])
+
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
       <PerfectScrollbar>
@@ -106,43 +118,38 @@ const Results = ({ className, customers, ...rest }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {customers.slice(0, limit).map(customer => (
+              {Object.keys(studentObjects).map(id => 
                 <TableRow
                   hover
-                  key={customer.id}
-                  selected={selectedCustomerIds.indexOf(customer.id) !== -1}
-                >
+                  key={studentObjects[id].id}
+                  selected={selectedCustomerIds.indexOf(studentObjects[id].id) !== -1}>
+                
                   <TableCell padding="checkbox">
                     <Checkbox
-                      checked={selectedCustomerIds.indexOf(customer.id) !== -1}
-                      onChange={event => handleSelectOne(event, customer.id)}
+                      checked={selectedCustomerIds.indexOf(studentObjects[id].id) !== -1}
+                      onChange={event => handleSelectOne(event, studentObjects[id].id)}
                       value="true"
                     />
                   </TableCell>
                   <TableCell>
                     <Box alignItems="center" display="flex">
-                      {/* <Avatar
-                        className={classes.avatar}
-                        src={customer.avatarUrl}
-                      >
-                        {getInitials(customer.name)}
-                      </Avatar> */}
+                     
                       <Typography color="textPrimary" variant="body1">
-                        {customer.name}
+                        {`${studentObjects[id].firstName}.${studentObjects[id].lastName}`}
                       </Typography>
                     </Box>
                   </TableCell>
-                  <TableCell>{customer.email}</TableCell>
+                  <TableCell>{studentObjects[id].email}</TableCell>
                   <TableCell>
-                    {`${customer.address.city}, ${customer.address.state}, ${customer.address.country}`}
+                    {`${studentObjects[id].City}, ${studentObjects[id].state}, ${studentObjects[id].country}`}
                   </TableCell>
-                  <TableCell>{customer.phone}</TableCell>
+                  <TableCell>{studentObjects[id].phone}</TableCell>
                   <TableCell>
-                    {moment(customer.createdAt).format('DD/MM/YYYY')}
+                    {moment(studentObjects[id].createdAt).format('DD/MM/YYYY')}
                   </TableCell>
-                  <TableCell>{customer.course.join(',')}</TableCell>
+                  <TableCell>{studentObjects[id].course.join(',')}</TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </Box>
