@@ -91,10 +91,20 @@ const ProfileDetails = ({ className, ...rest }) => {
   });
 
   const handleChange = event => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value
-    });
+    console.log(event.target.value, event.target.name);
+    if (event.target.name === 'course') {
+      if (values[event.target.name].length < 2) {
+        setValues({
+          ...values,
+          [event.target.name]: event.target.value
+        });
+      }
+    } else {
+      setValues({
+        ...values,
+        [event.target.name]: event.target.value
+      });
+    }
   };
   const handleSubmit = () => {
     let data = {
