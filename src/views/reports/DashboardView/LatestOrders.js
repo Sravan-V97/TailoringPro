@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import moment from 'moment';
 import { v4 as uuid } from 'uuid';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
+import firebaseDb from '../../../firebase';
 import {
   Box,
   Button,
@@ -24,66 +25,6 @@ import {
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
 const data = [
-  {
-    id: uuid(),
-    ref: 'CDD1049',
-    amount: 30.5,
-    customer: {
-      name: 'Ekaterina Tankova'
-    },
-    createdAt: 1555016400000,
-    status: 'pending'
-  },
-  {
-    id: uuid(),
-    ref: 'CDD1048',
-    amount: 25.1,
-    customer: {
-      name: 'Cao Yu'
-    },
-    createdAt: 1555016400000,
-    status: 'delivered'
-  },
-  {
-    id: uuid(),
-    ref: 'CDD1047',
-    amount: 10.99,
-    customer: {
-      name: 'Alexa Richardson'
-    },
-    createdAt: 1554930000000,
-    status: 'refunded'
-  },
-  {
-    id: uuid(),
-    ref: 'CDD1046',
-    amount: 96.43,
-    customer: {
-      name: 'Anje Keizer'
-    },
-    createdAt: 1554757200000,
-    status: 'pending'
-  },
-  {
-    id: uuid(),
-    ref: 'CDD1045',
-    amount: 32.54,
-    customer: {
-      name: 'Clarke Gillebert'
-    },
-    createdAt: 1554670800000,
-    status: 'delivered'
-  },
-  {
-    id: uuid(),
-    ref: 'CDD1044',
-    amount: 16.76,
-    customer: {
-      name: 'Adam Denisov'
-    },
-    createdAt: 1554670800000,
-    status: 'delivered'
-  }
 ];
 
 const useStyles = makeStyles(() => ({
@@ -96,6 +37,17 @@ const useStyles = makeStyles(() => ({
 const LatestOrders = ({ className, ...rest }) => {
   const classes = useStyles();
   const [orders] = useState(data);
+
+  var [studentObjects,setStudentObjects] = useState({})
+
+  useEffect(()=>{
+    firebaseDb.child('studentdetails').on('value',snapshot=>{
+      if(snapshot.val()!=null)
+      setStudentObjects({
+        ...snapshot.val()
+      })
+    }) 
+  },[])
 
   return (
     <Card
@@ -110,23 +62,10 @@ const LatestOrders = ({ className, ...rest }) => {
             <TableHead>
               <TableRow>
                 <TableCell>
-                  Order Ref
+                  Student Name
                 </TableCell>
                 <TableCell>
-                  Customer
-                </TableCell>
-                <TableCell sortDirection="desc">
-                  <Tooltip
-                    enterDelay={300}
-                    title="Sort"
-                  >
-                    <TableSortLabel
-                      active
-                      direction="desc"
-                    >
-                      Date
-                    </TableSortLabel>
-                  </Tooltip>
+                  Courses
                 </TableCell>
                 <TableCell>
                   Status
@@ -134,29 +73,26 @@ const LatestOrders = ({ className, ...rest }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {orders.map((order) => (
+            {Object.keys(studentObjects).map(id => 
                 <TableRow
                   hover
-                  key={order.id}
+                  key={studentObjects.id}
                 >
                   <TableCell>
-                    {order.ref}
+                  {`${studentObjects[id].firstName}.${studentObjects[id].lastName}`}
                   </TableCell>
                   <TableCell>
-                    {order.customer.name}
-                  </TableCell>
-                  <TableCell>
-                    {moment(order.createdAt).format('DD/MM/YYYY')}
+                  {studentObjects[id].course.join(',')}
                   </TableCell>
                   <TableCell>
                     <Chip
                       color="primary"
-                      label={order.status}
+                      label="Active"
                       size="small"
                     />
                   </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </Box>
@@ -166,7 +102,7 @@ const LatestOrders = ({ className, ...rest }) => {
         justifyContent="flex-end"
         p={2}
       >
-        <RouterLink to="/app/courses">
+        <RouterLink to="/app/students">
           <Button
             color="primary"
             endIcon={<ArrowRightIcon />}

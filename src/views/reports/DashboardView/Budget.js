@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
+import firebaseDb from '../../../firebase';
 import {
   Avatar,
   Box,
@@ -13,6 +14,7 @@ import {
 } from '@material-ui/core';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import MoneyIcon from '@material-ui/icons/Money';
+import './cards.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,8 +37,19 @@ const useStyles = makeStyles((theme) => ({
 const Budget = ({ className, ...rest }) => {
   const classes = useStyles();
 
+  var [courseObjects,setCourseObjects] = useState({})
+
+  useEffect(()=>{
+    firebaseDb.child('coursedetails').on('value',snapshot=>{
+      if(snapshot.val()!=null)
+      setCourseObjects({
+        ...snapshot.val()
+      })
+    }) 
+  },[])
+
   return (
-    <Card
+    <Card id="cardDesign"
       className={clsx(classes.root, className)}
       {...rest}
     >
@@ -50,15 +63,15 @@ const Budget = ({ className, ...rest }) => {
             <Typography
               color="textSecondary"
               gutterBottom
-              variant="h6"
+              variant="h5"
             >
-              BUDGET
+              TOTAL COURSES
             </Typography>
             <Typography
               color="textPrimary"
-              variant="h3"
+              variant="h1"
             >
-              $24,000
+             {Object.keys(courseObjects).length}
             </Typography>
           </Grid>
           <Grid item>
@@ -67,25 +80,7 @@ const Budget = ({ className, ...rest }) => {
             </Avatar>
           </Grid>
         </Grid>
-        <Box
-          mt={2}
-          display="flex"
-          alignItems="center"
-        >
-          <ArrowDownwardIcon className={classes.differenceIcon} />
-          <Typography
-            className={classes.differenceValue}
-            variant="body2"
-          >
-            12%
-          </Typography>
-          <Typography
-            color="textSecondary"
-            variant="caption"
-          >
-            Since last month
-          </Typography>
-        </Box>
+        
       </CardContent>
     </Card>
   );

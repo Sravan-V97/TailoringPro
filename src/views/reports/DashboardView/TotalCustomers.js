@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
+import firebaseDb from '../../../firebase';
+import './cards.css';
 import {
   Avatar,
   Box,
@@ -35,8 +37,19 @@ const useStyles = makeStyles((theme) => ({
 const TotalCustomers = ({ className, ...rest }) => {
   const classes = useStyles();
 
+  var [studentObjects,setStudentObjects] = useState({})
+
+  useEffect(()=>{
+    firebaseDb.child('studentdetails').on('value',snapshot=>{
+      if(snapshot.val()!=null)
+      setStudentObjects({
+        ...snapshot.val()
+      })
+    }) 
+  },[])
+
   return (
-    <Card
+    <Card id="cardDesign"
       className={clsx(classes.root, className)}
       {...rest}
     >
@@ -50,15 +63,15 @@ const TotalCustomers = ({ className, ...rest }) => {
             <Typography
               color="textSecondary"
               gutterBottom
-              variant="h6"
+              variant="h5"
             >
-              TOTAL CUSTOMERS
+              TOTAL STUDENTS
             </Typography>
             <Typography
               color="textPrimary"
-              variant="h3"
+              variant="h1"
             >
-              1,600
+              {Object.keys(studentObjects).length}
             </Typography>
           </Grid>
           <Grid item>

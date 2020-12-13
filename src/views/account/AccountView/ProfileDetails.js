@@ -23,11 +23,15 @@ import './profile.css';
 import data from 'src/views/customer/CustomerListView/data';
 const states = [
   {
-    value: 'kerala',
+    value: 'select state ',
+    label: 'Select State'
+  },
+  {
+    value: 'Kerala',
     label: 'Kerala'
   },
   {
-    value: 'tamilnadu',
+    value: 'Tamilnadu',
     label: 'Tamilnadu'
   }
 ];
@@ -233,7 +237,7 @@ const ProfileDetails = ({ className, ...rest }) => {
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                label="Street"
+                label="Hometown"
                 name="street"
                 onChange={handleChange}
                 type="text"

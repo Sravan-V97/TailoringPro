@@ -38,44 +38,26 @@ const Dashboard = () => {
         >
           <Grid
             item
-            lg={4}
-            sm={4}
-            xl={4}
+            lg={6}
+            sm={6}
+            xl={6}
             xs={12}
           >
             <Budget />
           </Grid>
           <Grid
             item
-            lg={4}
-            sm={4}
-            xl={4}
+            lg={6}
+            sm={6}
+            xl={6}
             xs={12}
           >
             <TotalCustomers />
           </Grid>
+        
           <Grid
             item
-            lg={4}
-            sm={4}
-            xl={4}
-            xs={12}
-          >
-            <TasksProgress />
-          </Grid>
-         
-          <Grid
-            item
-            lg={4}
-            md={6}
-            xl={3}
-            xs={12}
-          >
-            <LatestProducts />
-          </Grid>
-          <Grid
-            item
-            lg={8}
+            lg={12}
             md={12}
             xl={9}
             xs={12}
